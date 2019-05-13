@@ -22,11 +22,14 @@ const printDocASTReducer = {
   Document: node => join(node.definitions, '\n\n') + '\n',
 
   OperationDefinition(node) {
-    const op = node.operation;
-    const name = node.name;
-    const varDefs = wrap('(', join(node.variableDefinitions, ', '), ')');
+    const { variableDefinitions, selectionSet, name, operation : op } = node;
+
+    // const varDefs = wrap('(', join(node.variableDefinitions, ', '), ')');
+    // MODIFIED: use multiline for variable definition
+    const varDefs = variableDefinitions.length > 1
+      ? wrap('(\n', indent(join(variableDefinitions, '\n')), '\n)')
+      : wrap('(', join(variableDefinitions, ', '), ')');
     const directives = join(node.directives, ' ');
-    const selectionSet = node.selectionSet;
     // Anonymous queries with no directives or variable definitions can use
     // the query short form.
     return !name && !directives && !varDefs && op === 'query'
@@ -45,7 +48,14 @@ const printDocASTReducer = {
   Field: ({ alias, name, arguments: args, directives, selectionSet }) =>
     join(
       [
-        wrap('', alias, ': ') + name + wrap('(', join(args, ', '), ')'),
+        wrap('', alias, ': ') + name +
+        // wrap('(', join(args, ', '), ')'),
+        // MODIFIED: Use multiline for field
+        (
+          args.length > 1
+          ? wrap('(\n', indent(join(args, '\n')), '\n)')
+          : wrap('(', join(args, ', '), ')')
+        ),
         join(directives, ' '),
         selectionSet,
       ],

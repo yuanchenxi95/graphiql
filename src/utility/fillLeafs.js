@@ -9,10 +9,11 @@ import {
   getNamedType,
   isLeafType,
   parse,
-  print,
   TypeInfo,
   visit,
 } from 'graphql';
+
+import { customizedPrint } from './customizedPrint';
 
 /**
  * Given a document string which may not be valid due to terminal fields not
@@ -53,7 +54,7 @@ export function fillLeafs(schema, docString, getDefaultFieldNames) {
           const indent = getIndentation(docString, node.loc.start);
           insertions.push({
             index: node.loc.end,
-            string: ' ' + print(selectionSet).replace(/\n/g, '\n' + indent),
+            string: ' ' + customizedPrint(selectionSet).replace(/\n/g, '\n' + indent),
           });
         }
       }

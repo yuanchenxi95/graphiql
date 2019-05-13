@@ -7,7 +7,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { astFromValue, print } from 'graphql';
+import { astFromValue } from 'graphql';
+import { customizedPrint } from '../../utility/customizedPrint';
 
 export default function DefaultValue({ field }) {
   const { type, defaultValue } = field;
@@ -16,7 +17,7 @@ export default function DefaultValue({ field }) {
       <span>
         {' = '}
         <span className="arg-default-value">
-          {print(astFromValue(defaultValue, type))}
+          {customizedPrint(astFromValue(defaultValue, type))}
         </span>
       </span>
     );

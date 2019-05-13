@@ -739,7 +739,7 @@ export class GraphiQL extends React.Component {
     }
 
     const ast = parse(query);
-    editor.setValue(print(mergeAst(ast)));
+    editor.setValue(customizedPrint(mergeAst(ast)));
   };
 
   handleEditQuery = debounce(100, value => {

@@ -1,4 +1,6 @@
-import {GraphQLList, GraphQLNonNull, parse, print} from 'graphql'
+import {GraphQLList, GraphQLNonNull, parse } from 'graphql';
+
+import { customizedPrint } from './customizedPrint';
 
 const ROOT_TYPE = {
   QUERY: 'query',
@@ -64,7 +66,7 @@ function printArguments(field, rootType) {
     }`;
 
   // prettify the string
-  return print(parse(string));
+  return customizedPrint(parse(string));
 }
 
 function injectQuery(field, rootType, setEditorValue) {
