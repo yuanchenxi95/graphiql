@@ -182,13 +182,21 @@ export default class TypeDoc extends React.Component {
 function Field({ schema, type, field, setEditorValue, onClickType, onClickField }) {
   const rootType = getRootType(schema, type);
 
+  const buttonStyles = {
+    'borderRadius': '20px',
+    'backgroundColor': '#f4f4f4',
+    'color': 'black'
+  }
+
   return (
     <div className="doc-category-item">
       {
-        rootType !== ROOT_TYPE.UNSUPPORTED && <button
+        rootType !== ROOT_TYPE.UNSUPPORTED
+        && <button
           // className="docExplorerShow"
+          style={buttonStyles}
           onClick={() => injectQuery(field, rootType, setEditorValue)}>
-          {'inject'}
+          {'+'}
         </button>
       }
       <a
