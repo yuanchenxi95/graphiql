@@ -26,7 +26,7 @@ const printDocASTReducer = {
 
     // const varDefs = wrap('(', join(node.variableDefinitions, ', '), ')');
     // MODIFIED: use multiline for variable definition
-    const varDefs = variableDefinitions.length > 1
+    const varDefs = variableDefinitions && variableDefinitions.length > 1
       ? wrap('(\n', indent(join(variableDefinitions, '\n')), '\n)')
       : wrap('(', join(variableDefinitions, ', '), ')');
     const directives = join(node.directives, ' ');
@@ -52,7 +52,7 @@ const printDocASTReducer = {
         // wrap('(', join(args, ', '), ')'),
         // MODIFIED: Use multiline for field
         (
-          args.length > 1
+          args && args.length > 1
           ? wrap('(\n', indent(join(args, '\n')), '\n)')
           : wrap('(', join(args, ', '), ')')
         ),
