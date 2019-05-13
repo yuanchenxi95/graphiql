@@ -34,6 +34,7 @@ import {
   introspectionQuery,
   introspectionQuerySansSubscriptions,
 } from '../utility/introspectionQueries';
+import { customizedPrint } from '../utility/customizedPrint';
 
 const DEFAULT_DOC_EXPLORER_WIDTH = 350;
 
@@ -713,7 +714,7 @@ export class GraphiQL extends React.Component {
     const editor = this.getQueryEditor();
 
     // prettify the query
-    const prettifiedQuery = print(parse(value))
+    const prettifiedQuery = customizedPrint(parse(value))
 
     // fill the leafs of the query, read more from fillLeafs doc
     const { result } = fillLeafs(
@@ -726,7 +727,7 @@ export class GraphiQL extends React.Component {
 
   handlePrettifyQuery = () => {
     const editor = this.getQueryEditor();
-    editor.setValue(print(parse(editor.getValue())));
+    editor.setValue(customizedPrint(parse(editor.getValue())));
   };
 
   handleMergeQuery = () => {
