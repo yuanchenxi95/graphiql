@@ -39,12 +39,16 @@ const initialNav = {
 export class DocExplorer extends React.Component {
   static propTypes = {
     schema: PropTypes.instanceOf(GraphQLSchema),
+    setEditorValue: PropTypes.func,
   };
 
   constructor() {
     super();
 
-    this.state = { navStack: [initialNav] };
+    this.state = {
+      navStack: [initialNav],
+      rootType: null,
+    };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -55,7 +59,7 @@ export class DocExplorer extends React.Component {
   }
 
   render() {
-    const schema = this.props.schema;
+    const { schema, setEditorValue } = this.props;
     const navStack = this.state.navStack;
     const navItem = navStack[navStack.length - 1];
 
@@ -89,6 +93,7 @@ export class DocExplorer extends React.Component {
       content = (
         <TypeDoc
           schema={schema}
+          setEditorValue={setEditorValue}
           type={navItem.def}
           onClickType={this.handleClickTypeOrField}
           onClickField={this.handleClickTypeOrField}

@@ -406,6 +406,7 @@ export class GraphiQL extends React.Component {
             ref={c => {
               this.docExplorerComponent = c;
             }}
+            setEditorValue={this.setEditorValue}
             schema={this.state.schema}>
             <div className="docExplorerHide" onClick={this.handleToggleDocs}>
               {'\u2715'}
@@ -706,6 +707,21 @@ export class GraphiQL extends React.Component {
     }
 
     this.handleRunQuery(operationName);
+  }
+
+  setEditorValue = (value) => {
+    const editor = this.getQueryEditor();
+
+    // prettify the query
+    const prettifiedQuery = print(parse(value))
+
+    // fill the leafs of the query, read more from fillLeafs doc
+    const { result } = fillLeafs(
+      this.state.schema,
+      prettifiedQuery,
+      this.props.getDefaultFieldNames,
+    );
+    editor.setValue(result);
   }
 
   handlePrettifyQuery = () => {

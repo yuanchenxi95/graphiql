@@ -19,10 +19,12 @@ import Argument from './Argument';
 import MarkdownContent from './MarkdownContent';
 import TypeLink from './TypeLink';
 import DefaultValue from './DefaultValue';
+import { injectQuery, getRootType, ROOT_TYPE } from '../../utility/argumentsGenerator';
 
 export default class TypeDoc extends React.Component {
   static propTypes = {
     schema: PropTypes.instanceOf(GraphQLSchema),
+    setEditorValue: PropTypes.func,
     type: PropTypes.object,
     onClickType: PropTypes.func,
     onClickField: PropTypes.func,
@@ -42,7 +44,7 @@ export default class TypeDoc extends React.Component {
   }
 
   render() {
-    const schema = this.props.schema;
+    const { schema, setEditorValue } = this.props;
     const type = this.props.type;
     const onClickType = this.props.onClickType;
     const onClickField = this.props.onClickField;
@@ -88,8 +90,10 @@ export default class TypeDoc extends React.Component {
             .map(field => (
               <Field
                 key={field.name}
+                schema={schema}
                 type={type}
                 field={field}
+                setEditorValue={setEditorValue}
                 onClickType={onClickType}
                 onClickField={onClickField}
               />
@@ -110,6 +114,7 @@ export default class TypeDoc extends React.Component {
               deprecatedFields.map(field => (
                 <Field
                   key={field.name}
+                  schema={schema}
                   type={type}
                   field={field}
                   onClickType={onClickType}
@@ -173,9 +178,19 @@ export default class TypeDoc extends React.Component {
   handleShowDeprecated = () => this.setState({ showDeprecated: true });
 }
 
-function Field({ type, field, onClickType, onClickField }) {
+
+function Field({ schema, type, field, setEditorValue, onClickType, onClickField }) {
+  const rootType = getRootType(schema, type);
+
   return (
     <div className="doc-category-item">
+      {
+        rootType !== ROOT_TYPE.UNSUPPORTED && <button
+          // className="docExplorerShow"
+          onClick={() => injectQuery(field, rootType, setEditorValue)}>
+          {'inject'}
+        </button>
+      }
       <a
         className="field-name"
         onClick={event => onClickField(field, type, event)}>
@@ -211,8 +226,10 @@ function Field({ type, field, onClickType, onClickField }) {
 }
 
 Field.propTypes = {
+  schema: PropTypes.object,
   type: PropTypes.object,
   field: PropTypes.object,
+  setEditorValue: PropTypes.func,
   onClickType: PropTypes.func,
   onClickField: PropTypes.func,
 };

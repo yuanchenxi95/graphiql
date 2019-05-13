@@ -11,3 +11,5 @@ dist/
 /graphiql.js
 /graphiql.min.js
 /graphiql.css
+
+.idea

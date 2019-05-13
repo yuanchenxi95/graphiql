@@ -18,6 +18,7 @@ const {
   GraphQLString,
   GraphQLID,
   GraphQLList,
+  GraphQLNonNull,
 } = require('graphql');
 
 // Test Schema
@@ -206,6 +207,16 @@ const TestMutationType = new GraphQLObjectType({
         value: { type: GraphQLString },
       },
     },
+    setStringRequired: {
+      type: GraphQLString,
+      description: 'Set the string field required',
+      args: {
+        value: { type: GraphQLNonNull(GraphQLString) },
+      },
+      resolve(value, args) {
+        return JSON.stringify(args);
+      },
+    }
   },
 });
 
