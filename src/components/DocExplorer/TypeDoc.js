@@ -16,10 +16,10 @@ import {
 } from 'graphql';
 
 import Argument from './Argument';
+import InjectQueryButton from './InjectQueryButton';
 import MarkdownContent from './MarkdownContent';
 import TypeLink from './TypeLink';
 import DefaultValue from './DefaultValue';
-import { injectQuery, getRootType, ROOT_TYPE } from '../../utility/argumentsGenerator';
 
 export default class TypeDoc extends React.Component {
   static propTypes = {
@@ -180,25 +180,10 @@ export default class TypeDoc extends React.Component {
 
 
 function Field({ schema, type, field, setEditorValue, onClickType, onClickField }) {
-  const rootType = getRootType(schema, type);
-
-  const buttonStyles = {
-    'borderRadius': '20px',
-    'backgroundColor': '#f4f4f4',
-    'color': 'black',
-  }
 
   return (
     <div className="doc-category-item">
-      {
-        rootType !== ROOT_TYPE.UNSUPPORTED
-        && <button
-          // className="docExplorerShow"
-          style={buttonStyles}
-          onClick={() => injectQuery(field, rootType, setEditorValue)}>
-          {'+'}
-        </button>
-      }
+      <InjectQueryButton schema={schema} type={type} field={field} setEditorValue={setEditorValue} />
       <a
         className="field-name"
         onClick={event => onClickField(field, type, event)}>

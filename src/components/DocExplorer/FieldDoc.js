@@ -11,19 +11,23 @@ import PropTypes from 'prop-types';
 import Argument from './Argument';
 import MarkdownContent from './MarkdownContent';
 import TypeLink from './TypeLink';
+import InjectQueryButton from './InjectQueryButton';
 
 export default class FieldDoc extends React.Component {
   static propTypes = {
-    field: PropTypes.object,
+    schema: PropTypes.object.isRequired,
+    type: PropTypes.object.isRequired,
+    field: PropTypes.object.isRequired,
+    setEditorValue: PropTypes.func.isRequired,
     onClickType: PropTypes.func,
   };
 
   shouldComponentUpdate(nextProps) {
-    return this.props.field !== nextProps.field;
+    return this.props.field !== nextProps.field || this.props.type !== nextProps.type;
   }
 
   render() {
-    const field = this.props.field;
+    const { field, schema, type, setEditorValue } = this.props;
 
     let argsDef;
     if (field.args && field.args.length > 0) {
@@ -58,6 +62,7 @@ export default class FieldDoc extends React.Component {
             className="doc-deprecation"
             markdown={field.deprecationReason}
           />}
+        <InjectQueryButton schema={schema} type={type} field={field} setEditorValue={setEditorValue} />
         <div className="doc-category">
           <div className="doc-category-title">
             {'type'}

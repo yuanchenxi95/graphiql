@@ -1,4 +1,4 @@
-import {GraphQLList, GraphQLNonNull, parse } from 'graphql';
+import {GraphQLList, GraphQLNonNull, parse} from 'graphql';
 
 import { customizedPrint } from './customizedPrint';
 
@@ -9,22 +9,45 @@ const ROOT_TYPE = {
   UNSUPPORTED: 'unsupported',
 }
 
-function getRootType(schema, type) {
+let schemaCached = null;
+let schemaMap = new Map();
+
+function buildSchemaMap(type, typeEnum) {
+  if (type && type.getFields) {
+    const fields = type.getFields();
+
+    Object.keys(fields).forEach(fieldName => {
+      schemaMap.set(fields[fieldName], typeEnum);
+    });
+
+  }
+}
+
+function getRootType(schema, field) {
   // if schema or type is null
-  if (!schema || !type) {
+  if (!schema || !field) {
     return ROOT_TYPE.UNSUPPORTED;
   }
 
-  if (type === schema.getQueryType()) {
-    return ROOT_TYPE.QUERY;
-  } else if (type === schema.getMutationType()) {
-    return ROOT_TYPE.MUTATION;
-  } else if (type === schema.getSubscriptionType()) {
-    return ROOT_TYPE.SUBSCRIPTION;
+  // schema is not equals to the cached schema, rebuild the map
+  if (schema !== schemaCached) {
+    schemaCached = schema;
+    schemaMap = new Map();
+
+    const queryType = schema.getQueryType();
+    const mutationType = schema.getMutationType();
+    const subscriptionType = schema.getSubscriptionType();
+    buildSchemaMap(queryType, ROOT_TYPE.QUERY);
+    buildSchemaMap(mutationType, ROOT_TYPE.MUTATION);
+    buildSchemaMap(subscriptionType, ROOT_TYPE.SUBSCRIPTION);
+  }
+
+  if (schemaMap.has(field)) {
+    return schemaMap.get(field);
   }
 
   return ROOT_TYPE.UNSUPPORTED;
-};
+}
 
 function printType(type) {
   if (type instanceof GraphQLNonNull) {

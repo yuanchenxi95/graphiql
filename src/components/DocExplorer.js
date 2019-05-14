@@ -103,6 +103,9 @@ export class DocExplorer extends React.Component {
       content = (
         <FieldDoc
           field={navItem.def}
+          schema={schema}
+          type={navItem.def}
+          setEditorValue={setEditorValue}
           onClickType={this.handleClickTypeOrField}
         />
       );
