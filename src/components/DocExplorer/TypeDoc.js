@@ -185,7 +185,7 @@ function Field({ schema, type, field, setEditorValue, onClickType, onClickField 
   const buttonStyles = {
     'borderRadius': '20px',
     'backgroundColor': '#f4f4f4',
-    'color': 'black'
+    'color': 'black',
   }
 
   return (

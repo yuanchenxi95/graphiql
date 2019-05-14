@@ -8,7 +8,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import { buildClientSchema, GraphQLSchema, parse, print } from 'graphql';
+import { buildClientSchema, GraphQLSchema, parse } from 'graphql';
 
 import { ExecuteButton } from './ExecuteButton';
 import { ImagePreview } from './ImagePreview';
@@ -35,6 +35,7 @@ import {
   introspectionQuerySansSubscriptions,
 } from '../utility/introspectionQueries';
 import { customizedPrint } from '../utility/customizedPrint';
+import { copyToClipboard } from '../utility/copyToClipboard';
 
 const DEFAULT_DOC_EXPLORER_WIDTH = 350;
 
@@ -269,6 +270,11 @@ export class GraphiQL extends React.Component {
           onClick={this.handleToggleHistory}
           title="Show History"
           label="History"
+        />
+        <ToolbarButton
+          onClick={this.handleCopyQuery}
+          title="Copy Query"
+          label="Copy"
         />
       </GraphiQL.Toolbar>
     );
@@ -741,6 +747,17 @@ export class GraphiQL extends React.Component {
     const ast = parse(query);
     editor.setValue(customizedPrint(mergeAst(ast)));
   };
+
+  handleCopyQuery = () => {
+    const editor = this.getQueryEditor();
+    const query = editor.getValue();
+
+    if (!query) {
+      return;
+    }
+    copyToClipboard(query);
+
+  }
 
   handleEditQuery = debounce(100, value => {
     const queryFacts = this._updateQueryFacts(
