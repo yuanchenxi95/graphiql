@@ -34,7 +34,8 @@
   "scripts": {
     "build": "bash ./resources/build.sh",
     "check": "flow check",
-    "dev": "babel-node test/server.js",
+    "deploy": "gh-pages -d build",
+    "dev": "npx babel-node test/server.js",
     "lint": "eslint --report-unused-disable-directives src",
     "lint-check": "eslint --print-config .eslintrc | eslint-config-prettier-check",
     "prettier": "prettier --write src/**/*.{js,jsx}",
@@ -57,8 +58,8 @@
   "peerDependencies": {
     "graphql": "^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0",
     "prop-types": ">=15.5.0",
-    "react": "^15.6.0 || ^16.0.0",
-    "react-dom": "^15.6.0 || ^16.0.0"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   },
   "devDependencies": {
     "@babel/cli": "7.4.4",
@@ -82,6 +83,7 @@
     "express": "5.0.0-alpha.5",
     "express-graphql": "0.6.7",
     "flow-bin": "0.98.1",
+    "gh-pages": "^2.0.1",
     "graphql": "14.1.1",
     "jsdom": "15.0.0",
     "lint-staged": "8.1.6",

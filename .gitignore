@@ -8,6 +8,7 @@ yarn-error.log
 node_modules/
 coverage/
 dist/
+build/
 /graphiql.js
 /graphiql.min.js
 /graphiql.css
