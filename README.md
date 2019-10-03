@@ -2,6 +2,9 @@ GraphiQL
 ========
 */ˈɡrafək(ə)l/* A Customized GraphiQL IDE.
 
+### Demo:
+https://chenxi-graphiql-example.herokuapp.com/graphql
+
 ### Requirements:
 1. The version of react and react-dom must be >= 16.2.0
 
